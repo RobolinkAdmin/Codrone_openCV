@@ -2,7 +2,7 @@ from time import sleep
 import cv2
 
 point_color = (100,255,100)
-font_big = 1.5
+font_big = 0.5
 simple_color = (0,0,10)
 font_small = 0.5
 
@@ -69,7 +69,7 @@ def putTextonFrame(frame, battPercent_ = 0, differ_ = 0, sum_ = 0, THRE_DIFFER =
         color_ = simple_color
         font_size = font_small
 
-    cv2.putText(frame, "Batt : " +  format(battPercent_), (0, 1*w), cv2.FONT_HERSHEY_SIMPLEX, font_size , color_, 1.5, cv2.LINE_AA)
+    cv2.putText(frame, "Batt : " +  format(battPercent_), (0, 1*w), cv2.FONT_HERSHEY_SIMPLEX, font_size , color_, 1, cv2.LINE_AA)
 
     differ_ = abs(differ_)
     if(THRE_SUM < sum_ and THRE_DIFFER < differ_):
@@ -80,7 +80,7 @@ def putTextonFrame(frame, battPercent_ = 0, differ_ = 0, sum_ = 0, THRE_DIFFER =
         font_size = font_small
 
     if(THRE_DIFFER < 1): THRE_DIFFER = 1
-    cv2.putText(frame, "Differ : "  + "{0:.2f}".format((differ_/THRE_DIFFER) * 100,2) + "%", (0, 2*w), font, font_size, color_, 1.5, cv2.LINE_AA)
+    cv2.putText(frame, "Differ : "  + "{0:.2f}".format((differ_/THRE_DIFFER) * 100,2) + "%", (0, 2*w), font, font_size, color_, 1, cv2.LINE_AA)
 
     if(THRE_SUM < sum_):
         color_ = point_color
@@ -89,7 +89,7 @@ def putTextonFrame(frame, battPercent_ = 0, differ_ = 0, sum_ = 0, THRE_DIFFER =
         color_ = simple_color
         font_size = font_small
 
-    cv2.putText(frame, "Sum : " + "{0:.2f}".format(sum_/THRE_SUM * 100) + "%", (0, 3*w), cv2.FONT_HERSHEY_SIMPLEX, font_size, color_, 1.5, cv2.LINE_AA)
+    cv2.putText(frame, "Sum : " + "{0:.2f}".format(sum_/THRE_SUM * 100) + "%", (0, 3*w), cv2.FONT_HERSHEY_SIMPLEX, font_size, color_, 1, cv2.LINE_AA)
 
 
 
@@ -175,28 +175,8 @@ def keyBoardController(drone, key):
 
     if key == ord("q"):
         drone.sendStop()
+        cv2.destroyAllWindows()  # shut down all windows
         print("[STOPPING CODRONE]")
-        cv2.destroyAllWindows()  # shut down all windows
         sleep(1)
-        drone.sendLinkDisconnect()  # disconnect from codrone
-        print("[CLOSING SERIAL COMMUNICATION]")
         breakLoop = 1
-
-    return breakLoop
-
-
-
-
-def keyBoardControllerTest(cap,key):
-    breakLoop = 0
-
-    if key == ord("p"):
-        sleep(1)
-        print("print!!!")
-
-    if key == ord("q"):
-        print("[[[[[[[[[[[[[[[[quit]]]]]]]]]]]]]]")
-        cv2.destroyAllWindows()  # shut down all windows
-        breakLoop = 1
-
     return breakLoop
