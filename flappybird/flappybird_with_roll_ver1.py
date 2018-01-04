@@ -108,7 +108,7 @@ def compare_move():
         v.set_control(-v.ROLL,0,0,0)
     #up
     elif(v.sum > v.MOVE):
-    	if(v.throttle == v.THRO_UP):
+        if(v.throttle == v.THRO_UP):
             v.up_time += v.past_time
         v.set_control(0,0,0,v.THRO_UP)
     #down
@@ -122,20 +122,19 @@ def draw_for_debug(frame):
 
     #right
     if(v.roll > 0):
-        cv2.rectangle(frame, (w - 10, 0), (w, h), (10, 200, 10), 3)
+        cv2.rectangle(frame, (w - 10, 0), (w, h), (200, 200, 200), 5)
     #left
     elif(v.roll < 0):
-        cv2.rectangle(frame, (0, 0), (10, h), (10, 200, 10), 3)
+        cv2.rectangle(frame, (0, 0), (10, h), (200, 200, 200), 5)
     #up
     elif(v.throttle == v.THRO_UP):
-        cv2.rectangle(frame, (0, 0), (w, 10), (10, 200, 10), 3)
+        cv2.rectangle(frame, (0, 0), (w, 10), (200, 200, 200), 5)
     #down
     elif(v.throttle == v.THRO_DOWN):
-        cv2.rectangle(frame, (0,w - 10), (w,h), (10, 200, 10), 3)
+        cv2.rectangle(frame, (0,w - 10), (w,h), (200, 200, 200), 5)
 
     putTextonFrame(frame=frame, battPercent_= v.battery * 10, differ_= v.differ, sum_= v.sum, THRE_DIFFER= v.DIFFER_PERCENT*v.sum,
                    THRE_SUM=v.MOVE)
-
     return frame
 
 def processing_capture(drone, port_name, drone_name, face_detection = 0):
@@ -157,9 +156,9 @@ def processing_capture(drone, port_name, drone_name, face_detection = 0):
         if(face_detection == 1):
             h, w,_ = frame.shape
             ROI = 100
-            print(h, w)
             while(not face(frame, "frame",ROI)):
-                cv2.rectangle(frame, (int(w / 2 - ROI),0 ), (int(w / 2 + ROI),int(h / 2)), (0, 255, 0), 3)
+                cv2.rectangle(frame, (int(w / 2 - ROI),0 ), (int(w / 2 + ROI),int(h / 2)), (230, 230, 230), 10,cv2.LINE_AA)
+                frame = cv2.flip(frame,1)
                 cv2.imshow("frame", frame)
                 cv2.waitKey(1)
                 ret, frame = cap.read()
@@ -202,9 +201,9 @@ def test(mode = 0, port_name = 0, drone_name = 0):
     if mode == 1: drone = Drone()
     else: drone = 0
     processing_capture(drone, port_name, drone_name, face_detection=1)
-
     try:
-        pass
+    	pass
+    	#processing_capture(drone, port_name, drone_name, face_detection=1)
     except:
         if mode == 1:
             drone.sendStop()
