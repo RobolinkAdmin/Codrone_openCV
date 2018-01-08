@@ -1,7 +1,8 @@
 from time import sleep
+from petrone.protocol import *
 import cv2
 
-point_color = (100,255,100)
+point_color = (255,69,0)
 font_big = 0.5
 simple_color = (0,0,10)
 font_small = 0.5
@@ -20,7 +21,6 @@ def timeCounter(elapsedTime, timeSum, resetTime):
         # in our case we want the messages to be sent every 50 milliseconds
         timeSum = 0
         # once we reach the resettime we set it back to zero
-
     return timeSum
     # make sure to retunr the amount of time elapsed
 
@@ -62,9 +62,9 @@ def putTextonFrame(frame, battPercent_ = 0, differ_ = 0, sum_ = 0, THRE_DIFFER =
     h,w,_ = frame.shape
     w = int(w/15)
 
-    if(battPercent_ < 10):
+    if(battPercent_ < 50):
         color_ = point_color
-        font_size = font_big
+        font_size = 1.5
     else:
         color_ = simple_color
         font_size = font_small
@@ -157,7 +157,7 @@ def keyBoardController(drone, key):
     if key == ord("t"):
         print("TAKEOFF CODRONE")
         drone.sendTakeOff()
-        sleep(5)
+        sleep(3)
         print("TAKEOFF -----")
 
 
@@ -175,8 +175,18 @@ def keyBoardController(drone, key):
 
     if key == ord("q"):
         drone.sendStop()
-        cv2.destroyAllWindows()  # shut down all windows
         print("[STOPPING CODRONE]")
         sleep(1)
         breakLoop = 1
+
+    if (key == ord("z")):
+        cv2.destroyAllWindows()
+        drone.sendStop()
+        sleep(1)
+        drone.sendLinkDisconnect()
+        sleep(1)
+        breakLoop = 2
+        print("[[[[[[[[[STOP EVERYTHING]]]]]]]]]]")
+
     return breakLoop
+
